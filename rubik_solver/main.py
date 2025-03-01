@@ -37,7 +37,7 @@ def draw_background():
 def main():
     pygame.init()
     display = (800, 600)
-    pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
+    pygame.display.set_mode(display, DOUBLEBUF | OPENGL | RESIZABLE)
     pygame.display.set_caption('Rubik Solver')
 
     # Cài đặt OpenGL
@@ -63,6 +63,15 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
+                
+            # Thêm xử lý sự kiện resize
+            elif event.type == pygame.VIDEORESIZE:
+                display = (event.w, event.h)
+                pygame.display.set_mode(display, DOUBLEBUF | OPENGL | RESIZABLE)
+                glViewport(0, 0, display[0], display[1])
+                glMatrixMode(GL_PROJECTION)
+                glLoadIdentity()
+                gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
                 
             # Xử lý sự kiện chuột
             elif event.type == pygame.MOUSEBUTTONDOWN:
