@@ -4,6 +4,36 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from rubik import RubikCube
 
+def draw_background():
+    """Vẽ background gradient"""
+    glMatrixMode(GL_PROJECTION)
+    glPushMatrix()
+    glLoadIdentity()
+    glOrtho(-1, 1, -1, 1, -1, 1)
+    
+    glMatrixMode(GL_MODELVIEW)
+    glPushMatrix()
+    glLoadIdentity()
+    
+    glDisable(GL_DEPTH_TEST)
+    glBegin(GL_QUADS)
+    
+    # Gradient từ xanh dương nhạt đến trắng
+    glColor3f(0.8, 0.9, 1.0)  # Màu trên (xanh dương nhạt)
+    glVertex2f(-1.0, 1.0)
+    glVertex2f(1.0, 1.0)
+    glColor3f(1.0, 1.0, 1.0)  # Màu dưới (trắng)
+    glVertex2f(1.0, -1.0)
+    glVertex2f(-1.0, -1.0)
+    
+    glEnd()
+    glEnable(GL_DEPTH_TEST)
+    
+    glMatrixMode(GL_PROJECTION)
+    glPopMatrix()
+    glMatrixMode(GL_MODELVIEW)
+    glPopMatrix()
+
 def main():
     pygame.init()
     display = (800, 600)
@@ -86,6 +116,9 @@ def main():
 
         # Xóa buffer
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        
+        # Vẽ background
+        draw_background()
         
         # Cập nhật animation nếu có
         rubik_cube.update_animation()
